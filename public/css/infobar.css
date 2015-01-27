@@ -1,0 +1,51 @@
+.infobar {
+	PADDING-RIGHT: 20px; BACKGROUND: url(images/lineBg.gif) repeat-x; WIDTH: 100%; HEIGHT: 26px
+}
+.buttonInfo {
+	PADDING-LEFT: 6px
+}
+.buttonInfo A {
+	MARGIN-LEFT: -6px
+}
+.infopath {
+	PADDING-LEFT: 10px; FONT-SIZE: 12px; align: left
+}
+.logoutbutton {
+	BACKGROUND: url(images/button-login.gif) no-repeat; WIDTH: 28px; HEIGHT: 20px
+}
+.mydeskbutton {
+	BACKGROUND: url(images/button-Table.gif) no-repeat; WIDTH: 28px; HEIGHT: 20px
+}
+.issueRegisterButton {
+	BACKGROUND: url(images/button-info.gif) no-repeat; WIDTH: 28px; HEIGHT: 20px
+}
+.helpSupportCenterButton {
+	BACKGROUND: url(images/button-help.gif) no-repeat; WIDTH: 28px; HEIGHT: 20px
+}
+.time {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #016d61; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.versionbutton {
+	BACKGROUND: url(images/version.gif) no-repeat; WIDTH: 28px; HEIGHT: 20px
+}
+.messagebutton {
+	MARGIN-TOP: 2px; BACKGROUND: url(images/button-message.gif) no-repeat; WIDTH: 28px; HEIGHT: 20px
+}
+.message2button {
+	MARGIN-TOP: 2px; BACKGROUND: url(images/button-message2.gif) no-repeat; WIDTH: 28px; HEIGHT: 20px
+}
+.affichebutton {
+	MARGIN-TOP: 2px; BACKGROUND: url(images/button-affiche.gif) no-repeat; WIDTH: 28px; HEIGHT: 20px
+}
+.affiche2button {
+	MARGIN-TOP: 2px; BACKGROUND: url(images/button-affiche2.gif) no-repeat; WIDTH: 28px; HEIGHT: 20px
+}
+.marquee01 {
+	BACKGROUND: url(images/lineBg.gif) repeat-x; WIDTH: 300px; LINE-HEIGHT: 26px; HEIGHT: 26px
+}
+.marquee01 A {
+	COLOR: #333
+}
+.marquee01 A:hover {
+	COLOR: #2929ab
+}

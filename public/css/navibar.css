@@ -1,0 +1,81 @@
+.logo {
+	BACKGROUND: url(/ams/images/logo.gif) no-repeat left 50%; HEIGHT: 54px
+}
+.topRight {
+	PADDING-LEFT: 240px
+}
+.naviBar {
+	CLEAR: both; PADDING-RIGHT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; OVERFLOW: hidden; WIDTH: 100%; PADDING-TOP: 0px; HEIGHT: 40px
+}
+UL.naviTabs {
+	DISPLAY: inline; FONT-WEIGHT: normal; FONT-SIZE: 12px; FLOAT: left; MARGIN: 0px; HEIGHT: 40px
+}
+UL.naviTabs LI {
+	DISPLAY: block; FLOAT: left; OVERFLOW: hidden; WIDTH: 100px; LIST-STYLE-TYPE: none; HEIGHT: 40px
+}
+UL.naviTabs LI A {
+	BACKGROUND-POSITION: right 50%; DISPLAY: block; BACKGROUND-IMAGE: url(/ams/images/line.gif); WIDTH: 100px; COLOR: #ffffff; LINE-HEIGHT: 40px; BACKGROUND-REPEAT: no-repeat; POSITION: absolute; TEXT-ALIGN: center; TEXT-DECORATION: none
+}
+UL.naviTabs LI A:hover {
+	BACKGROUND-POSITION: center top; BACKGROUND-IMAGE: url(/ams/images/tabBg1.gif); WIDTH: 100px; COLOR: #00675a; BACKGROUND-REPEAT: no-repeat
+}
+UL.naviTabs LI A.highlight {
+	BACKGROUND-POSITION: center top; BACKGROUND-IMAGE: url(/ams/images/tabBg1.gif); WIDTH: 100px; COLOR: #00675a; BACKGROUND-REPEAT: no-repeat
+}
+UL.naviTabs LI A.active {
+	BACKGROUND-POSITION: center top; BACKGROUND-IMAGE: url(/ams/images/tabBg.gif); WIDTH: 100px; COLOR: #00675a; BACKGROUND-REPEAT: no-repeat; TEXT-ALIGN: center
+}
+UL.naviTabs LI A.active:hover {
+	BACKGROUND-POSITION: center top; BACKGROUND-IMAGE: url(/ams/images/tabBg.gif); WIDTH: 100px; COLOR: #00675a; BACKGROUND-REPEAT: no-repeat; TEXT-ALIGN: center
+}
+.naviMenu {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; OVERFLOW: hidden; WIDTH: 100%; WORD-BREAK: keep-all; PADDING-TOP: 2px; HEIGHT: 25px
+}
+.naviMenu UL {
+	DISPLAY: none; MARGIN-LEFT: 0px
+}
+.naviMenu UL.active {
+	DISPLAY: inline
+}
+.naviMenu UL LI {
+	BACKGROUND: url(/ams/images/line1.gif) no-repeat right 50%; FLOAT: left; LIST-STYLE-TYPE: none
+}
+.naviMenu UL A {
+	FONT-SIZE: 12px; COLOR: #00675a; FONT-FAMILY: tahoma; TEXT-DECORATION: none
+}
+.naviMenu UL LI IMG {
+	
+}
+.naviMenu UL LI A {
+	PADDING-RIGHT: 12px; PADDING-LEFT: 12px; FLOAT: left; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; LIST-STYLE-TYPE: none
+}
+.naviMenu UL LI A.active {
+	PADDING-RIGHT: 12px; BACKGROUND-POSITION: right bottom; PADDING-LEFT: 12px; BACKGROUND-IMAGE: url(/ams/images/naviMenuselect.gif); PADDING-BOTTOM: 4px; PADDING-TOP: 4px; BACKGROUND-REPEAT: no-repeat
+}
+.naviMenu UL LI A:hover {
+	PADDING-RIGHT: 12px; BACKGROUND-POSITION: right bottom; PADDING-LEFT: 12px; BACKGROUND-IMAGE: url(/ams/images/naviMenuOn.gif); PADDING-BOTTOM: 4px; PADDING-TOP: 4px; BACKGROUND-REPEAT: no-repeat
+}
+.leftTabBtn {
+	FLOAT: left; POSITION: relative
+}
+.leftTabBtn INPUT {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; FONT-SIZE: 24px; BACKGROUND: none transparent scroll repeat 0% 0%; BORDER-LEFT: 0px; COLOR: #00675a; BORDER-BOTTOM: 0px
+}
+.rightTabBtn {
+	FLOAT: right; POSITION: relative
+}
+.rightTabBtn INPUT {
+	BORDER-RIGHT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 0px; PADDING-LEFT: 0px; FONT-SIZE: 24px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; BORDER-LEFT: 0px; COLOR: #00675a; PADDING-TOP: 0px; BORDER-BOTTOM: 0px
+}
+.leftMenuBtn {
+	FLOAT: left; POSITION: relative; TOP: -9px
+}
+.leftMenuBtn INPUT {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; FONT-SIZE: 18px; BACKGROUND: none transparent scroll repeat 0% 0%; BORDER-LEFT: 0px; COLOR: #00675a; BORDER-BOTTOM: 0px
+}
+.rightMenuBtn {
+	FLOAT: right; POSITION: relative; TOP: -9px
+}
+.rightMenuBtn INPUT {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; FONT-SIZE: 18px; BACKGROUND: none transparent scroll repeat 0% 0%; BORDER-LEFT: 0px; COLOR: #00675a; BORDER-BOTTOM: 0px
+}

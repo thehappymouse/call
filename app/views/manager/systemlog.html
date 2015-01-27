@@ -1,0 +1,201 @@
+<script>
+Ext.onReady(function(){
+        var infoSearch = new Ext.FormPanel({
+            title: '查询条件',
+            defaults:{
+                border: false
+            },
+            labelAlign: 'right',
+            style: 'margin-top:10px',
+            url:'/ams/Systemlog/list',
+            layout:'column',
+            items: [
+            {
+                columnWidth:.3,
+                layout: 'form',
+                defaults:{
+                    xtype: 'textfield'
+                },
+                items: [
+                    {
+                        xtype: 'compositefield',
+                        fieldLabel: '操作时间',
+                        defaults:{
+                            xtype: 'datefield'
+                        },
+                        items:[
+                            new Ext.form.DateField({
+                                name:'FromData',
+                                width:100,
+                                value:new Date(new Date()-7*24*60*60*1000),
+                                format: 'Y-m-d'
+                            }),{
+                                xtype: 'displayfield',
+                                value: '至: '
+                            },new Ext.form.DateField({
+                                name:'ToData',
+                                width:100,
+                                value:new Date().format('Y-m-d'),
+                                format: 'Y-m-d'
+                            })]
+                    }
+                ]
+            },{
+                columnWidth:.25,
+                layout: 'form',
+                items:[{
+                    width:100,
+                    xtype:'button',
+                    text:'查询',
+                    handler:function(){//ams/Systemlog/list
+                        var data = infoSearch.getForm().getValues();
+                        Ext.apply(listView.store.baseParams, infoSearch.getForm().getValues());
+                        listView.store.load({
+                            params : data,
+                            callback:function(v,action){
+                                if (v.length == 0) {
+                                    listView.store.removeAll();
+                                    Ext.getCmp('bbar').updateInfo();
+                                    Ext.MessageBox.alert("提示","没有数据！");
+                                }
+                            },
+                            add: false
+                        });
+                    }
+                }]
+            }]
+        });
+
+        var searchTab = new Ext.TabPanel({
+            labelWidth: 85,
+            activeTab: 0,
+            height:70,
+            plain:true,
+            defaults:{autoScroll: true},
+            items:[
+                infoSearch
+            ]
+        });
+
+    var store = new Ext.data.JsonStore(
+            {
+                url: '/ams/Systemlog/list',
+                root: 'data',
+                totalProperty: 'total',
+                baseParams: {
+                    start: 0,
+                    limit: 50
+                },
+                fields: ["ID","UserName","Action","Data","Result","IP","Time"]
+            });
+
+    var sm = new Ext.grid.CheckboxSelectionModel();
+    var listView = new Ext.grid.EditorGridPanel(
+            {
+                store: store,
+                multiSelect: true,
+                title: '操作日志',
+                stripeRows: true,
+                region: 'center',
+                sm: sm,
+                autoHeight:true,
+                emptyText: '没有数据',
+                viewConfig: {forceFit:true},
+                reserveScrollOffset: true,
+                columns: [
+                    sm,
+                    {
+                        id: 'name',
+                        header: '操作员',
+                        align:"center",
+                        sortable: true,
+                        dataIndex: 'UserName'
+                    }, {
+                        header: '动作',
+                        dataIndex: 'Action',
+                        align:"center",
+                        sortable: true
+                    }, {
+                        header: '明细',
+                        sortable: true,
+                        align:"center",
+                        dataIndex: 'Data',
+                        editor:new Ext.form.TextField({
+                            allowBlank:false
+                        })
+                    }, {
+                        header: '结果',
+                        sortable: true,
+                        align:"center",
+                        dataIndex: 'Result',
+                        editor:new Ext.form.TextField({
+                            allowBlank:false
+                        })
+                    }, {
+                        header: 'IP地址',
+                        sortable: true,
+                        align:"center",
+                        dataIndex: 'IP',
+                        editor:new Ext.form.TextField({
+                            allowBlank:false
+                        })
+                    }, {
+                        header: '操作时间',
+                        sortable: true,
+                        align:"center",
+                        dataIndex: 'Time'
+                    }],
+                bbar: new Ext.PagingToolbar({
+                    pageSize: 5,
+                    store: store,
+                    id: 'bbar',
+                    displayMsg: "显示{0}条到{1}条记录，总共{2}条记录",
+                    emptyMsg: "没有数据记录",
+                    displayInfo: true
+                })
+            });
+    listView.on("render",  function(p,e){
+
+        /* p.canCel.setHandler(function(b, e){
+         if (p.getSelectionModel().getSelections().length == 0) {
+         Ext.Msg.alert('提示','请选择用户！');
+         return;
+         }
+         var SegmentNumber = p.getSelectionModel().getSelections()[0].data.CustomerNumber;
+         freeView.store.load({
+         params : {Number : SegmentNumber },
+         add: false
+         })
+         })*/
+    })
+    var infoPanel = new Ext.TabPanel({
+        labelWidth: 85,
+        activeTab: 0,
+        plain:true,
+        style: 'margin-top:15px',
+        defaults:{autoScroll: true},
+        items:[
+            listView
+        ]
+    });
+        var formpanels = new Ext.Panel({
+            region: 'center',
+            fileUpload: true,
+            autoScroll: true,
+            bodyStyle: "padding:20px;",
+            items: [
+                searchTab,
+                infoPanel
+            ]
+        });
+
+
+        new Ext.Viewport(
+        {
+            layout: 'border',
+            items: [
+                formpanels
+            ]
+        });
+})
+</script>

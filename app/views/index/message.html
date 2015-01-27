@@ -1,0 +1,126 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        var G = new AjaxFun();//获取ajax方法
+        var data = {Page: "1",PageSize:PageSize};
+        var Url = "/ams/message/list";
+        var clickpage = new ClickPage(G,ShowTable);//分页
+        G.GetAjax('post', Url, data, ShowTable);
+
+        function ShowTable(value, total) {
+            Page = clickpage.ReturnPage();
+            var headarray = Array("序号", "内容", "发件人", "时间");
+            var model = Array("#", "Content", "Sender", "SendTime");
+            var modelcss = Array("text-align:center", "text-align:center","text-align:center", "text-align:center", "text-align:center", "text-align:center;");
+            SetArrearsTable(total, value, headarray, model, modelcss);
+        }
+
+        //，s数据是填充表格的数据，headarray是表头, modelcss是model的css样式
+        function SetArrearsTable(total, s, headarray, model, modelcss) {
+            PageNumber = Math.ceil(total/PageSize);
+            var bodyTpl = "";
+            var headmodel = "";
+            var money = 0;
+            var t = 1;
+            var color;
+            if (s) {
+                for (var i in s) {
+                    var source = ReplaceArray(s[i]);
+                    if (s[i].IsRead != 1) {
+                          color = "style='color:red'";
+                    } else {
+                        color = "";
+                    }
+                    bodyTpl += '<tr '+color+'>';
+                    for (var n in model) {
+                        if (model[n] == "#") {
+                            bodyTpl += '<td style="' + modelcss[n] + '">' + t + '</td>';
+                        } /*else if (model[n] == "Action") {
+                            bodyTpl += '<td  style="' + modelcss[n] + '"><button id="action" name="0268564926" class="btn btn-success" style="background-color:#009966">操作</button></a></td>';
+                        }*/ else if (model[n] == "Role") {
+                            bodyTpl += '<td style="' + modelcss[n] + '">' + UserDuty[source[model[n]]] + '</td>';
+                        }  else {
+                            bodyTpl += '<td style="' + modelcss[n] + '">' + source[model[n]] + '</td>';
+                        }
+                    }
+                    t++;
+                    bodyTpl += '</tr>';
+                }
+            }
+            var CurrentNum = s.length;
+
+            if(PageNumber == 1) {
+                PTpl="";
+            } else {
+                if ( Page == 1 ) {
+                    PTpl = "<span id='next' style='cursor:pointer'>下一页</span>&nbsp;&nbsp;<span id='end' style='cursor:pointer'>末页</span>";
+                } else if (Page < PageNumber && Page!= 1 ) {
+                    PTpl = "<span id='start' style='cursor:pointer'>首页</span>&nbsp;&nbsp;<span id='prev' style='cursor:pointer'>上一页</span>&nbsp;&nbsp;<span id='next' style='cursor:pointer'>下一页</span>&nbsp;&nbsp;<span id='end' style='cursor:pointer'>末页</span>";
+                } else if (Page == PageNumber) {
+                    PTpl = "<span id='start' style='cursor:pointer'>首页</span>&nbsp;&nbsp;<span id='prev' style='cursor:pointer'>上一页</span>";
+                }
+            }
+
+            var headTpl = '<div class="line ClientInfo">收费消息</div><div><table id="info" >' +
+                    '<thead>' +
+                    '<tr >';
+            for (var i in headarray) {
+                headmodel += '<th>' + headarray[i] + '</th>';
+            }
+            var pageTpl = '<tr >'+
+                    '<td id="PageNum" colspan="4" style="text-align:left">&nbsp;&nbsp;&nbsp;&nbsp;当前第<input name="Num" type="text" value="'+Page+'" style="width:12px;padding:0 8px" />页，总共'+PageNumber+'页&nbsp;&nbsp;'+PTpl+
+                    '&nbsp;&nbsp;<span >本页'+CurrentNum+'条数据，总共'+total+'条数据</span></td></tr>';
+
+            var footTpl = '</tr>'+pageTpl+'</tbody></table></div>';
+            var tpl = headTpl + headmodel + '</tr></thead><tbody>' + bodyTpl + footTpl;
+            $("#Arrears div").remove();
+            $("#Arrears").append(tpl);
+            $("#Arrears table tr:odd").addClass("InfoTr");
+            $("#Entry").css("display", "block");
+        }
+
+        clickpage.SearchUrl = Url;
+        Page = clickpage.ReturnPage();
+        clickpage.PageClick();
+        $("body").keydown(function() {
+            var msg;
+            if (event.keyCode == "13") {
+                if ($("[name=Num]").focus()) {
+                    Page = $("[name=Num]").val();
+                    if (Page>PageNumber || Page<1) {
+                        msg = "总共只有"+PageNumber+"页。没有第"+Page+"页！";
+                        popupDiv('pop-div',msg);
+                        Page =1;
+                    }
+                    var Searchdata = data+"&Page="+Page+"&PageSize="+PageSize;
+                    clickpage.Page = Page;
+                    G.GetAjax('post',SearchUrl,Searchdata,ShowTable);
+                }
+
+            }
+        })
+
+       /* $("#Arrears").on("click", "#action",function(v){
+           var ID = v.currentTarget.name;
+            $.ajax({
+                url:'/ams/Charges/Customer',
+                data:{ID:ID},
+                type:'GET',
+                dataType:'json',
+                success:function(v){
+                    if (v.success) {
+                        alert(1);
+                        console.log(v.data);
+                        var wd = window.open("/ams/charges/charges");
+                        console.dir(wd.document);
+                    }
+                }
+            })
+        })*/
+    })
+ </script>
+    <br/>
+
+    <div id="Arrears" class="TableCss">
+        <div></div>
+    </div>
+    <br /><br />

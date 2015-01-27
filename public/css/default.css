@@ -1,0 +1,315 @@
+BODY {
+	SCROLLBAR-FACE-COLOR: #d4f0ef; FONT-SIZE: 12px; MARGIN: 0px; SCROLLBAR-HIGHLIGHT-COLOR: #ffffff; OVERFLOW: auto; SCROLLBAR-SHADOW-COLOR: #76b8b3; COLOR: #333333; SCROLLBAR-ARROW-COLOR: #006b64; SCROLLBAR-BASE-COLOR: #76b8b3; scrollbar-3d-light-color: 003131
+}
+FORM {
+	MARGIN: 0px; WIDTH: 100%; HEIGHT: 100%
+}
+TD {
+	FONT-SIZE: 12px; COLOR: #333333; FONT-FAMILY: "ËÎÌו"
+}
+A {
+	COLOR: #333333; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #333333; TEXT-DECORATION: none
+}
+A:link {
+	COLOR: #333333; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #2e898d; TEXT-DECORATION: none
+}
+A.green:link {
+	COLOR: #005e5e; TEXT-DECORATION: none
+}
+A.green:visited {
+	COLOR: #005e5e; TEXT-DECORATION: underline
+}
+A.green:hover {
+	COLOR: #2e898d; TEXT-DECORATION: none
+}
+.tableFull {
+	WIDTH: 100%
+}
+.tableGridInput {
+	WIDTH: 100%; BORDER-COLLAPSE: collapse
+}
+.tableGridInput TD {
+	BORDER-RIGHT: #cce3db 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: #cce3db 1px solid; PADDING-LEFT: 1px; FONT-SIZE: 12px; BORDER-LEFT: #cce3db 1px solid; BORDER-BOTTOM: #cce3db 1px solid; BACKGROUND-COLOR: #f9fcfb
+}
+.tableGridInput TD.field {
+	WORD-BREAK: keep-all; HEIGHT: 30px; TEXT-ALIGN: right
+}
+.tableGridInput .readonly {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BACKGROUND-COLOR: #f9fcfb; BORDER-BOTTOM-STYLE: none
+}
+.tableGrid {
+	WIDTH: 100%; BORDER-COLLAPSE: collapse
+}
+.tableGrid TD {
+	BORDER-RIGHT: #cce3db 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: #cce3db 1px solid; PADDING-LEFT: 1px; FONT-SIZE: 12px; PADDING-BOTTOM: 1px; BORDER-LEFT: #cce3db 1px solid; PADDING-TOP: 1px; BORDER-BOTTOM: #cce3db 1px solid; BACKGROUND-COLOR: #f9fcfb
+}
+.tableGrid .tdheight {
+	BORDER-RIGHT: #cce3db 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: #cce3db 1px solid; PADDING-LEFT: 1px; FONT-SIZE: 12px; PADDING-BOTTOM: 1px; BORDER-LEFT: #cce3db 1px solid; PADDING-TOP: 1px; BORDER-BOTTOM: #cce3db 1px solid; HEIGHT: 22px; BACKGROUND-COLOR: #f9fcfb
+}
+.tableGrid .head {
+	BACKGROUND-IMAGE: url(images/table-head.gif); VERTICAL-ALIGN: bottom; LINE-HEIGHT: 19px; HEIGHT: 22px; TEXT-ALIGN: center
+}
+.tableGrid .field {
+	WIDTH: 105px; WORD-BREAK: keep-all; TEXT-ALIGN: right
+}
+.tableGrid .Unit {
+	WIDTH: 25px; WORD-BREAK: keep-all
+}
+.tableGrid .UnitWindow {
+	BACKGROUND-POSITION: center center; BACKGROUND-IMAGE: url(images/newwindow.gif); OVERFLOW: hidden; WIDTH: 25px; CURSOR: hand; BACKGROUND-REPEAT: no-repeat; TEXT-OVERFLOW: ellipsis
+}
+.tableGrid TD.text {
+	WIDTH: 20%
+}
+.number {
+	WHITE-SPACE: nowrap; TEXT-ALIGN: right
+}
+.tableGrid INPUT {
+	BORDER-RIGHT: #a7a6aa 1px solid; BORDER-TOP: #a7a6aa 1px solid; PADDING-LEFT: 2px; FONT-SIZE: 12px; BORDER-LEFT: #a7a6aa 1px solid; WIDTH: 100%; COLOR: #333333; BORDER-BOTTOM: #a7a6aa 1px solid
+}
+.tableGrid .inputLink {
+	FONT-SIZE: 12px; CURSOR: hand; COLOR: #005e5e; BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BACKGROUND-COLOR: #f9fcfb; TEXT-DECORATION: underline; BORDER-BOTTOM-STYLE: none
+}
+.tableGrid .readonly {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; BACKGROUND-COLOR: #f9fcfb; BORDER-BOTTOM-STYLE: none
+}
+.tableGrid .checkbox {
+	WIDTH: 15px; COLOR: #999999; BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; TEXT-ALIGN: left; BORDER-BOTTOM-STYLE: none
+}
+.tableGrid SELECT {
+	BORDER-RIGHT: #a7a6aa 1px solid; BORDER-TOP: #a7a6aa 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 12px; BORDER-LEFT: #a7a6aa 1px solid; WIDTH: 100%; COLOR: #333333; BORDER-BOTTOM: #a7a6aa 1px solid
+}
+.tableGrid TEXTAREA {
+	BORDER-RIGHT: #a7a6aa 1px solid; BORDER-TOP: #a7a6aa 1px solid; PADDING-LEFT: 2px; FONT-SIZE: 12px; BORDER-LEFT: #a7a6aa 1px solid; WIDTH: 100%; COLOR: #333333; BORDER-BOTTOM: #a7a6aa 1px solid
+}
+.tableGrid .button {
+	BORDER-RIGHT: #00a6a1 1px solid; PADDING-RIGHT: 3px; BACKGROUND-POSITION: center center; BORDER-TOP: #00a6a1 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 12px; BACKGROUND-IMAGE: url(images/button-mid.gif); BORDER-LEFT: #00a6a1 1px solid; WIDTH: auto; CURSOR: hand; COLOR: #004648; BORDER-BOTTOM: #00a6a1 1px solid; HEIGHT: 20px
+}
+.tableGrid .buttonSmall {
+	BORDER-RIGHT: #00a6a1 1px solid; PADDING-RIGHT: 2px; BACKGROUND-POSITION: center center; BORDER-TOP: #00a6a1 1px solid; PADDING-LEFT: 3px; FONT-SIZE: 12px; BACKGROUND-IMAGE: url(images/button-mid.gif); BORDER-LEFT: #00a6a1 1px solid; WIDTH: auto; CURSOR: hand; COLOR: #004648; BORDER-BOTTOM: #00a6a1 1px solid; HEIGHT: 16px
+}
+.buttonBg {
+	PADDING-RIGHT: 4px; PADDING-LEFT: 4px; BACKGROUND-IMAGE: url(../default/images/button-bg.gif); PADDING-BOTTOM: 4px; VERTICAL-ALIGN: top; WIDTH: 100%; PADDING-TOP: 4px; BACKGROUND-REPEAT: repeat-x; HEIGHT: 32px; TEXT-ALIGN: right
+}
+.button {
+	BORDER-RIGHT: #00a6a1 1px solid; PADDING-RIGHT: 3px; BACKGROUND-POSITION: center center; BORDER-TOP: #00a6a1 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 12px; BACKGROUND-IMAGE: url(images/button-mid.gif); BORDER-LEFT: #00a6a1 1px solid; CURSOR: hand; COLOR: #004648; BORDER-BOTTOM: #00a6a1 1px solid; HEIGHT: 20px
+}
+.buttonSmall {
+	BORDER-RIGHT: #00a6a1 1px solid; PADDING-RIGHT: 2px; BACKGROUND-POSITION: center center; BORDER-TOP: #00a6a1 1px solid; PADDING-LEFT: 3px; FONT-SIZE: 12px; BACKGROUND-IMAGE: url(images/button-mid.gif); BORDER-LEFT: #00a6a1 1px solid; CURSOR: hand; COLOR: #004648; BORDER-BOTTOM: #00a6a1 1px solid; HEIGHT: 16px
+}
+.tableGridPage {
+	WIDTH: 100%
+}
+.tableGridPageTd {
+	BORDER-RIGHT: #cce3db 1px solid; BORDER-TOP: #cce3db 1px solid; FONT-SIZE: 12px; PADDING-BOTTOM: 3px; BORDER-LEFT: #cce3db 1px solid; PADDING-TOP: 3px; BORDER-BOTTOM: #cce3db 1px solid; BACKGROUND-COLOR: #e7f8f2
+}
+.labelBg {
+	BACKGROUND-IMAGE: url(../default/images/Label-bg.gif); BACKGROUND-REPEAT: repeat-x; HEIGHT: 19px
+}
+.labelLeftOn {
+	BACKGROUND-POSITION: right 50%; BACKGROUND-IMAGE: url(../default/images/Label-left-on.gif); WIDTH: 4px; BACKGROUND-REPEAT: no-repeat; HEIGHT: 19px
+}
+.labelRightOn {
+	BACKGROUND-POSITION: left 50%; BACKGROUND-IMAGE: url(../default/images/Label-right-on.gif); WIDTH: 4px; BACKGROUND-REPEAT: no-repeat; HEIGHT: 19px
+}
+.labelMidOn {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; BACKGROUND-IMAGE: url(../default/images/Label-mid-on.gif); VERTICAL-ALIGN: bottom; LINE-HEIGHT: 17px; TEXT-ALIGN: center
+}
+.labelLeft {
+	BACKGROUND-POSITION: right 50%; BACKGROUND-IMAGE: url(../default/images/Label-left.gif); WIDTH: 4px; BACKGROUND-REPEAT: no-repeat; HEIGHT: 19px
+}
+.labelRight {
+	BACKGROUND-POSITION: left 50%; BACKGROUND-IMAGE: url(../default/images/Label-right.gif); WIDTH: 4px; BACKGROUND-REPEAT: no-repeat; HEIGHT: 19px
+}
+.labelMid {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; BACKGROUND-IMAGE: url(../default/images/Label-mid.gif); VERTICAL-ALIGN: bottom; LINE-HEIGHT: 17px; TEXT-ALIGN: center
+}
+.titleBg {
+	FONT-WEIGHT: bold; BACKGROUND-IMAGE: url(../default/images/Title-bg.gif); WIDTH: 100%; COLOR: #005377; HEIGHT: 23px
+}
+.titleLeft {
+	BACKGROUND-IMAGE: url(../default/images/Title-left.gif); WIDTH: 28px; HEIGHT: 23px
+}
+.titleText {
+	FONT-WEIGHT: bold; VERTICAL-ALIGN: bottom; COLOR: #005377; LINE-HEIGHT: 22px
+}
+.menuBg {
+	BACKGROUND-COLOR: #effaf9
+}
+A.menulink:visited {
+	
+}
+A.menulink:hover {
+	BACKGROUND-IMAGE: url(images/menu-bg-on.gif); BACKGROUND-REPEAT: repeat-x; BACKGROUND-COLOR: #effaf9
+}
+.menuBg1 {
+	FONT-WEIGHT: bold; BACKGROUND-IMAGE: url(images/menu-bg-1.gif); COLOR: #000000; TEXT-INDENT: 10px; HEIGHT: 31px
+}
+.menuBg2 {
+	BACKGROUND-IMAGE: url(images/menu-bg-2.gif); TEXT-INDENT: 25px; HEIGHT: 22px
+}
+.menuBg3 {
+	BACKGROUND-IMAGE: url(images/menu-bg-2.gif); TEXT-INDENT: 40px; HEIGHT: 22px
+}
+.menuBg4 {
+	BACKGROUND-IMAGE: url(images/menu-bg-2.gif); TEXT-INDENT: 55px; HEIGHT: 22px
+}
+.menuBgImg {
+	MARGIN-RIGHT: 5px
+}
+.boxBg {
+	BACKGROUND-IMAGE: url(images/box-bg.gif); WIDTH: 9px
+}
+.boxLeft {
+	BACKGROUND-IMAGE: url(images/box-left.gif); WIDTH: 9px; HEIGHT: 40px
+}
+.boxRight {
+	BACKGROUND-IMAGE: url(images/box-right.gif); WIDTH: 9px; HEIGHT: 40px
+}
+.linkBg {
+	FONT-WEIGHT: bold; BACKGROUND-IMAGE: url(images/link-bg.gif); VERTICAL-ALIGN: bottom; COLOR: #ffffff; LINE-HEIGHT: 27px; HEIGHT: 30px
+}
+A.toplink:link {
+	WIDTH: 70px; COLOR: #ffffff; HEIGHT: 21px; TEXT-ALIGN: center; TEXT-DECORATION: none
+}
+A.toplink:visited {
+	WIDTH: 70px; COLOR: #ffffff; HEIGHT: 21px; TEXT-ALIGN: center; TEXT-DECORATION: none
+}
+A.toplink:hover {
+	BACKGROUND-POSITION: center center; BACKGROUND-IMAGE: url(images/link-bg-on.gif); WIDTH: 70px; COLOR: #0c4d70; BACKGROUND-REPEAT: no-repeat; HEIGHT: 21px; TEXT-DECORATION: none
+}
+.topBg {
+	BACKGROUND-IMAGE: url(images/top.jpg); HEIGHT: 65px
+}
+.foodBg {
+	BACKGROUND-IMAGE: url(images/food-bg.gif); VERTICAL-ALIGN: bottom; COLOR: #006378; LINE-HEIGHT: 23px; HEIGHT: 26px; TEXT-ALIGN: center
+}
+.pageLeftBg {
+	BACKGROUND-COLOR: #effaf9
+}
+.markNewwindow {
+	BACKGROUND-POSITION: center 50%; BACKGROUND-IMAGE: url(images/newwindow.gif); WIDTH: 25px; BACKGROUND-REPEAT: no-repeat
+}
+.backDelete {
+	BACKGROUND-POSITION: center 50%; BACKGROUND-IMAGE: url(images/backdelete.gif); WIDTH: 25px; BACKGROUND-REPEAT: no-repeat
+}
+.topLeft {
+	BACKGROUND-IMAGE: url(images/top.jpg); WIDTH: 434px; HEIGHT: 65px
+}
+.topRight {
+	BACKGROUND-POSITION: right 50%; BACKGROUND-IMAGE: url(images/top1.jpg); WIDTH: 444px
+}
+.topBg {
+	BACKGROUND-IMAGE: url(images/top-bg.jpg)
+}
+.moveLeft {
+	BACKGROUND-POSITION: center center; BACKGROUND-IMAGE: url(images/add-left.gif); BACKGROUND-REPEAT: no-repeat
+}
+.moveRight {
+	BACKGROUND-POSITION: center center; BACKGROUND-IMAGE: url(images/add-right.gif); BACKGROUND-REPEAT: no-repeat
+}
+.moveUp {
+	BACKGROUND-POSITION: center center; BACKGROUND-IMAGE: url(images/add-up.gif); BACKGROUND-REPEAT: no-repeat
+}
+.moveDown {
+	BACKGROUND-POSITION: center center; BACKGROUND-IMAGE: url(images/add-down.gif); BACKGROUND-REPEAT: no-repeat
+}
+.sort-table {
+	WIDTH: 100%; BACKGROUND-COLOR: #e0f2ec
+}
+.sort-table THEAD {
+	HEIGHT: 24px; BACKGROUND-COLOR: #e7f8f2
+}
+.sort-table TD {
+	BORDER-RIGHT: #bfe0d4 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: #ffffff 1px solid; MARGIN-TOP: 1px; PADDING-LEFT: 1px; PADDING-BOTTOM: 1px; BORDER-LEFT: #bfe0d4 0px solid; PADDING-TOP: 1px; BORDER-BOTTOM: #bfe0d4 1px solid; HEIGHT: 24px
+}
+.sort-table THEAD TD {
+	BORDER-RIGHT: #cce3db 1px solid; BORDER-TOP: #cce3db 1px solid; BORDER-LEFT: #cce3db 1px solid; CURSOR: default; BORDER-BOTTOM: #cce3db 1px solid; TEXT-ALIGN: center
+}
+.sort-table THEAD TD:active {
+	BORDER-RIGHT: #e9ece0 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: #e9ece0 1px; PADDING-LEFT: 1px; PADDING-BOTTOM: 1px; BORDER-LEFT: #e9ece0 1px; PADDING-TOP: 1px; BORDER-BOTTOM: #e9ece0 1px solid
+}
+.sort-table THEAD TD:active {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; BORDER-LEFT-COLOR: buttonhighlight; BORDER-BOTTOM-COLOR: buttonshadow; PADDING-BOTTOM: 1px; BORDER-TOP-COLOR: buttonhighlight; PADDING-TOP: 1px; BORDER-RIGHT-COLOR: buttonshadow
+}
+.sort-table TD INPUT {
+	WIDTH: 100%
+}
+.sort-table TD SELECT {
+	WIDTH: 100%
+}
+.sort-table_div {
+	BORDER-RIGHT: #bfe0d4 1px solid; BORDER-LEFT: #bfe0d4 1px solid
+}
+.sort-arrow {
+	BACKGROUND-POSITION: center center; MARGIN: 0px 2px; WIDTH: 11px; BACKGROUND-REPEAT: no-repeat; HEIGHT: 11px
+}
+.descending {
+	BACKGROUND-IMAGE: url(images/downsimple.png)
+}
+.ascending {
+	BACKGROUND-IMAGE: url(images/upsimple.png)
+}
+.sort_table_even {
+	BACKGROUND-COLOR: #f2f2f2
+}
+.sort_table_odd {
+	BACKGROUND-COLOR: #f9fcfb
+}
+.sort_table_selcted {
+	BACKGROUND-COLOR: #49a7a4
+}
+.sort_table_selcted TD {
+	BORDER-TOP: #bfe0d4 1px solid; COLOR: #ffffff; BACKGROUND-COLOR: #49a7a4
+}
+.group_title {
+	BACKGROUND: #c0c0c0
+}
+.resizeDivClass {
+	Z-INDEX: 1; ; LEFT: expression(this . parentElement . offsetWidth-3); WIDTH: 2px; CURSOR: e-resize; POSITION: absolute
+}
+.scrolltree {
+	OVERFLOW-Y: scroll; VISIBILITY: inherit; OVERFLOW-X: auto; WIDTH: 100%; POSITION: static; HEIGHT: 100%
+}
+.divInnerFrame {
+	PADDING-RIGHT: 10px; OVERFLOW-Y: auto; PADDING-LEFT: 10px; PADDING-BOTTOM: 10px; MARGIN: 1px; WIDTH: 100%; PADDING-TOP: 10px; HEIGHT: 100%; BACKGROUND-COLOR: #dff9ff
+}
+.divContentTable {
+	MARGIN-TOP: 10px; MARGIN-BOTTOM: 10px; BACKGROUND-COLOR: #e7f8ff
+}
+.popupCaption {
+	HEIGHT: 7px; BACKGROUND-COLOR: #77c0b7
+}
+.popupBody {
+	BACKGROUND-COLOR: #e2f3ed
+}
+.popupButtonHover {
+	BACKGROUND-COLOR: #5bb1a6
+}
+.popupButtonHover TD {
+	BACKGROUND-COLOR: #bae7e0
+}
+.popupMenuRowHover {
+	BORDER-RIGHT: #5bb1a6 1px solid; BORDER-TOP: #5bb1a6 1px solid; PADDING-LEFT: 2px; BORDER-LEFT: #5bb1a6 1px solid; BORDER-BOTTOM: #5bb1a6 1px solid; HEIGHT: 20px; BACKGROUND-COLOR: #ffffff
+}
+.popupMenuTable {
+	BACKGROUND-IMAGE: url(images/popup_bg_menu.gif); BACKGROUND-REPEAT: repeat-y
+}
+.tableList {
+	WIDTH: 100%; BORDER-COLLAPSE: collapse
+}
+.tableList TD {
+	BORDER-RIGHT: #cce3db 1px solid; PADDING-RIGHT: 1px; BORDER-TOP: #cce3db 1px solid; PADDING-LEFT: 1px; FONT-SIZE: 12px; PADDING-BOTTOM: 1px; BORDER-LEFT: #cce3db 1px solid; PADDING-TOP: 1px; BORDER-BOTTOM: #cce3db 1px solid; HEIGHT: 22px; BACKGROUND-COLOR: #f9fcfb
+}
+.tableList .head {
+	HEIGHT: 22px; BACKGROUND-COLOR: #e7f8f2; TEXT-ALIGN: center
+}
+.gridbody P {
+	MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px
+}

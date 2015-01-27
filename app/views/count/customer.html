@@ -1,0 +1,528 @@
+<script>
+Ext.onReady(function(){
+    var startdate = <?php echo $startdate; ?>;
+    _pageSize = 50;
+/*三个动态框*/
+var teamCombox = new SettCombbox({
+    url:'/ams/Info/TeamList&ID=1&Type=1',
+    fieldLabel: '管理班组',
+    anchor:'95%',
+    id:'team',
+    hiddenName:'Team',
+    autoLoad:true
+});
+var peopleCombox = new SettCombbox({
+    url:'/ams/Info/UserList',
+    fieldLabel: '抄表员',
+    anchor:'95%',
+    hiddenName:'Name',
+    id:'people'
+});
+var NumberCombox = new SettCombbox({
+    url:'/ams/Info/SegmentList',
+    fieldLabel: '抄表段编号',
+    anchor:'95%',
+    hiddenName:'Number',
+    id:'number'
+});
+
+//监听store加载
+function comboxLoad(aCombox, bCombox, url)
+{
+    aCombox.store.on('load',function(){
+        bCombox.store.load({
+            url: url,
+            params: {
+                ID: aCombox.store.getAt(0).data.ID
+            }
+        });
+    });
+}
+//监听combox选择事件
+function comSelect(aCombox, bCombox, url)
+{
+    aCombox.on("select",function(combo){
+        bCombox.reset();
+        bCombox.store.load({
+            url: url,
+            params: {
+                ID: combo.value
+            }
+        });
+    })
+}
+comboxLoad(teamCombox, peopleCombox, "/ams/Info/UserList");
+comboxLoad(peopleCombox, NumberCombox, "/ams/Info/SegmentList");
+comSelect(teamCombox, peopleCombox,"/ams/Info/UserList");
+comSelect(peopleCombox, NumberCombox, "/ams/Info/SegmentList");
+var infoSearch = new Ext.FormPanel({
+    title: '查询条件',
+    defaults:{
+        border: false
+    },
+    labelAlign: 'right',
+    style: 'padding-top:10px',
+    url:'/ams/countsearch/customer',
+    layout:'column',
+    items: [{
+        columnWidth:.25,
+        layout: 'form',
+        defaults:{
+            xtype: 'textfield'
+        },
+        items: [
+            teamCombox
+            ,{
+                xtype: 'compositefield',
+                fieldLabel: '电费年月',
+                defaults:{
+                    xtype: 'datefield'
+                },
+                items:[
+                    new Ext.form.DateField({
+                        plugins:'monthPickerPlugin',
+                        name:'FromData',
+                        value:startdate,
+                        width:82,
+                        format: 'Ym'
+                    }),{
+                        xtype: 'displayfield',
+                        //   style: 'text-align:right;width:40px;',
+                        value: '至: '
+                    },new Ext.form.DateField({
+                        plugins:'monthPickerPlugin',
+                        name:'ToData',
+                        width:82,
+                        value:new Date().format('Ym'),
+                        format: 'Ym'
+                    })]
+            },
+            new QuietCombox({
+                fieldLabel: '电话有效',
+                displayField:'Text',
+                valueField:'PhoneEffective',
+                hiddenName:'PhoneEffective',
+                fields:['Text','PhoneEffective'],
+                data   : [['全部', '2'],['是', '1'],['否', '0']],
+                anchor:'95%'
+            }),
+            new QuietCombox({
+                fieldLabel: '费控标志',
+                displayField:'Text',
+                valueField:'IsControl',
+                hiddenName:'IsControl',
+                fields:['Text','IsControl'],
+                data   : [['全部', '2'],['是', '1'],['否', '0']],
+                anchor:'95%'
+            })]
+    },{
+        columnWidth:.25,
+        layout: 'form',
+        defaults:{
+            xtype: 'textfield'
+        },
+        items: [
+            peopleCombox
+            ,{
+                xtype: 'compositefield',
+                fieldLabel: '欠费金额',
+                anchor:'95%',
+                items:[
+                    new QuietCombox({
+                        width:50,
+                        displayField:'Text',
+                        valueField:'Arrears',
+                        hiddenName:'Arrears',
+                        fields:['Text','Arrears'],
+                        data   :[['≥', '1'],['<', '0']]
+                    }),{
+                        name: 'ArrearsValue',
+                        xtype: 'textfield',
+                        width:132
+                    }]
+            },{
+                xtype: 'compositefield',
+                fieldLabel: '欠费笔数',
+                items:[
+                    new QuietCombox({
+                        width:50,
+                        displayField:'Text',
+                        valueField:'ArrearsItems',
+                        hiddenName:'ArrearsItems',
+                        fields:['Text','ArrearsItems'],
+                        data   :[['≥', '1'],['<', '0']]
+                    }),{
+                        name: 'ArrearsItemsValue',
+                        xtype: 'textfield',
+                        width:132
+                    }],
+                anchor:'95%'
+            },
+            new QuietCombox({
+                fieldLabel: '租房客户',
+                displayField:'Text',
+                valueField:'IsRent',
+                hiddenName:'IsRent',
+                fields:['Text','IsRent'],
+                data   : [['全部', '2'],['是', '1'],['否', '0']],
+                anchor:'95%'
+            })]
+    },{
+        columnWidth:.25,
+        layout: 'form',
+        defaults:{
+            xtype: 'textfield'
+        },
+        items: [
+            NumberCombox
+            ,{
+                xtype: 'compositefield',
+                fieldLabel: '催费次数',
+                items:[
+                    new QuietCombox({
+                        width:50,
+                        displayField:'Text',
+                        valueField:'ReminderFee',
+                        hiddenName:'ReminderFee',
+                        fields:['Text','ReminderFee'],
+                        data   : [['≥', '1'],['<', '0']]
+                    }),{
+                        name: 'ReminderFeeValue',
+                        xtype: 'textfield',
+                        width:132
+                    }],
+                anchor:'95%'
+            },
+            new QuietCombox({
+                fieldLabel: '停电标志',
+                displayField:'Text',
+                valueField:'PowerCutLogo',
+                hiddenName:'PowerCutLogo',
+                fields:['Text','PowerCutLogo'],
+                data   : [['全部', '2'],['是', '1'],['否', '0']],
+                anchor:'95%'
+            }),{
+                xtype: 'compositefield',
+                fieldLabel: '停电次数',
+                items:[
+                    new QuietCombox({
+                        width:50,
+                        displayField:'Text',
+                        valueField:'PowerOutages',
+                        hiddenName:'PowerOutages',
+                        fields:['Text','PowerOutages'],
+                        data   : [['≥', '1'],['<', '0']]
+                    }),{
+                        name: 'PowerOutagesValue',
+                        xtype: 'textfield',
+                        width:132
+                    }],
+                anchor:'95%'
+            }]
+    },{
+        columnWidth:.25,
+        layout: 'form',
+        items: [{
+            fieldLabel: '用户编号',
+            xtype: 'textfield',
+            name: 'CustomerNumber',
+            anchor:'95%'
+        },{
+            html:'&nbsp;'
+        },{
+            html:'&nbsp;'
+        },{
+            html:'&nbsp;'
+        },{
+            xtype: 'compositefield',
+            items:[{
+                xtype:'hidden'
+            },{
+                width:100,
+                xtype:'button',
+                text:'查询',
+                handler:function(){
+                    infoSearch.getForm().submit({
+                        method:'GET',
+                        params: {
+                            start: 0,
+                            limit: _pageSize
+                        },
+                        success:function(action,msg){
+                            var text = Ext.decode(msg.response.responseText);
+                            if (text.success) {
+                                listView.store.loadData(text);
+                                Ext.apply(listView.store.baseParams, infoSearch.getForm().getValues());
+                                return;
+                            }
+                        },
+                        failure:function(action,msg) {
+                            var text = Ext.decode(msg.response.responseText);
+                            if (!text.success) {
+                                listView.store.removeAll();
+                                Ext.getCmp('bbar').updateInfo();
+                                Ext.Msg.alert('提示',text.msg);return;
+                            }
+                        }
+                    })
+                }
+            }],
+            anchor:'95%'
+        }]
+    }]
+});
+var searchPanel = new Ext.TabPanel({
+    labelWidth: 85,
+    activeTab: 0,
+    height:150,
+    plain:true,
+    defaults:{autoScroll: true},
+    items:[
+        infoSearch
+    ]
+});
+    var msgTip = new Ext.LoadMask(Ext.getBody(),{
+        msg:'Excel正在生成中',
+        removeMask : true
+    });
+
+var store = new Ext.data.JsonStore(
+        {
+            url: '/ams/countsearch/customer',
+           root: 'data',
+            fields: customerFelds
+        });
+
+var listView = new Ext.grid.EditorGridPanel(
+        {
+            store: store,
+            multiSelect: true,
+            title: '欠费用户信息',
+            stripeRows: true,
+            region: 'center',
+            autoHeight:true,
+            emptyText: '没有数据',
+            viewConfig: {forceFit:true},
+            reserveScrollOffset: true,
+            columns: [
+                {
+                    header: '抄表段编号',
+                    align:"center",
+                    sortable: true,
+                    dataIndex: 'Segment'
+                }, {
+                    header: '用户编号',
+                    dataIndex: 'CustomerNumber',
+                    align:"center",
+                    sortable: true,
+                    renderer:function(v){
+                        return "<a href='#'>"+v+"</a>";
+                    }
+                }, {
+                    header: '用户名称',
+                    sortable: true,
+                    align:"center",
+                    dataIndex: 'CustomerName'
+                }, {
+                    header: '用电地址',
+                    sortable: true,
+                    align:"center",
+                    dataIndex: 'Address'
+                }, {
+                    header: '房东电话',
+                    sortable: true,
+                    align:"center",
+                    dataIndex: 'LandlordPhone'
+                }, {
+                    header: '电费金额',
+                    sortable: true,
+                    align:"center",
+                    dataIndex: 'Money'
+                }, {
+                    header: '费控标志',
+                    sortable: true,
+                    align:"center",
+                    dataIndex: 'IsControl',
+                    renderer:function(v) {
+                        if (v == 1) {
+                            return '是';
+                        } else {
+                            return '否';
+                        }
+                    }
+                }, {
+                    header: '结清标志',
+                    sortable: true,
+                    align:"center",
+                    dataIndex: 'IsClean',
+                    renderer:function(v) {
+                        if (v == 1) {
+                            return '已结清';
+                        } else if (v == 0){
+                            return "<a style='color:#804000'>未结清</a>";
+                        } else {
+                            return '预收转逾期';
+                        }
+                    }
+                }, {
+                    header: '停电标志',
+                    sortable: true,
+                    align:"center",
+                    dataIndex: 'IsCut',
+                    renderer:function(v) {
+                        if (v == 1) {
+                            return "<a style='color:blue'>已停电</a>";
+                        } else {
+                            return '未停电';
+                        }
+                    }
+                }, {
+                    header: '催费次数',
+                    sortable: true,
+                    align:"center",
+                    dataIndex: 'PressCount',
+                    renderer:function(v){
+                        return "<a href='#'>"+v+"</a>";
+                    }
+                }, {
+                    header: '停电次数',
+                    sortable: true,
+                    align:"center",
+                    dataIndex: 'CutCount',
+                    renderer:function(v){
+                        return "<a href='#'>"+v+"</a>";
+                    }
+                }, {
+                    header: '欠费笔数',
+                    sortable: true,
+                    align:"center",
+                    dataIndex: 'ArrearsCount'
+                }, {
+                    header: '累计欠费次数',
+                    sortable: true,
+                    align:"center",
+                    dataIndex: 'AllArrearCount'
+                }, {
+                    header: '特殊客户',
+                    sortable: true,
+                    align:"center",
+                    dataIndex: 'IsSpecial',
+                    renderer:function(v) {
+                        if (v == 1) {
+                            return "<a style='color:red'>是</a>";
+                        } else {
+                            return '否';
+                        }
+                    }
+                }, {
+                    header: '租房客户',
+                    sortable: true,
+                    align:"center",
+                    dataIndex: 'IsRent',
+                    renderer:function(v) {
+                        if (v == 1) {
+                            return '是';
+                        } else {
+                            return '否';
+                        }
+                    }
+                }],
+            bbar: new Ext.PagingToolbar({
+                pageSize: _pageSize,
+                store: store,
+                id: 'bbar',
+                displayMsg: "显示{0}条到{1}条记录，总共{2}条记录",
+                emptyMsg: "没有数据记录",
+                displayInfo: true,
+                items:[
+                    '-', {
+                        text: 'excel',
+                        iconCls: 'excel',
+                        handler: function(btn, pressed){
+                            if (listView.getStore().data.length == 0) {
+                                Ext.MessageBox.alert('提示','请先查询数据');
+                                return;
+                            }
+                            msgTip.show();
+                            infoSearch.getForm().submit({
+                                url:'/ams/export/reminder',
+                                success:function(v,action){
+                                    var re = Ext.decode(action.response.responseText);
+                                    msgTip.hide();
+                                    Ext.MessageBox.alert('提示',"<a target='_blank' href='"+re.msg+"'>下载</a>");
+                                },
+                                failure:function(v,action) {
+                                    msgTip.hide();
+                                    Ext.MessageBox.alert('提示','创建失败');
+                                }
+                            })
+                        }
+                    },{
+                        id: 'htmlID',
+                        fieldLabel:''
+                    }]
+            })
+        });
+    listView.getStore().on("load",function(p){
+        var tpl = "";
+        var data = infoSearch.getForm().getValues();
+        data.start = 0;data.limit = 5;
+        Ext.Ajax.request({
+            params:data,
+            url:'/ams/CountSearch/customer',
+            success: function(v, action){
+                var re =  Ext.decode(v.responseText);
+                var total = re.total;
+                var allCustomer = re.countInfo.allCustomer;
+                var cut = re.countInfo.cutCount;
+                var s = re.countInfo.specialCount;
+                tpl = '总共'+total+'条数据，欠费用户：'+allCustomer+'位，停电用户：'+cut+'位，特殊用户：'+s+'位';
+                Ext.getCmp('htmlID').setText(tpl);
+            },
+            failure: function(){
+                Ext.getCmp('htmlID').setText(tpl);
+            }
+        })
+    })
+    listView.on('cellclick', function (grid, rowIndex, columnIndex, e) {
+        var record = grid.getStore().getAt(rowIndex);
+        var columnName = grid.getColumnModel().getDataIndex(columnIndex);
+        if (columnName == 'PressCount'){
+            lookInfo(record.data.CustomerNumber,1)
+        } else if(columnName == 'CutCount') {
+            lookInfo(record.data.CustomerNumber,2)
+        } else if( columnName == 'CustomerNumber'){
+            lookInfo(record.data.CustomerNumber,0)
+        }
+    })
+var listTab = new Ext.TabPanel({
+    labelWidth: 85,
+    activeTab: 0,
+    plain:true,
+    style: 'margin-top:15px',
+    defaults:{autoScroll: true},
+    items:[
+        listView
+    ]
+});
+
+
+var allPanel = new Ext.Panel({
+    region: 'center',
+    fileUpload: true,
+    autoScroll: true,
+    bodyStyle: "padding:20px;",
+    items: [
+        searchPanel,
+        listTab
+    ]
+});
+new Ext.Viewport(
+        {
+            layout: 'border',
+            items: [
+                allPanel
+            ]
+        });
+})
+</script>

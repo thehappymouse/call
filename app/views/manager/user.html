@@ -1,0 +1,257 @@
+<script type="text/javascript">
+Ext.onReady(function () {
+    _pageSize = 50;
+    del = function (value) {
+        Ext.Msg.confirm('提示', '是否删除此菜单', function (btn) {
+            if (btn == 'no') {
+                return;
+            } else {
+                Ext.Ajax.request({
+                    url: '../manager/userdel',
+                    params: {ID: value},
+                    success: function () {
+                        listView.store.removeAll();
+                        listView.store.reload();
+                    }
+                })
+            }
+        })
+    }
+
+    modify = function (value) {
+        modifyForm.getForm().load({
+            url: '../Poppage/ModifyUser',
+            params: {ID: value}
+        })
+        win.show();
+    }
+
+    var store = new Ext.data.JsonStore(
+            {
+                url: 'UserList',
+                root: 'data',
+                autoLoad: true,
+                baseParams: {
+                    start: 0,
+                    limit: _pageSize
+                },
+                fields: ['ID', 'Name', 'TeamName', 'TypeName']
+            });
+
+    var listView = new Ext.grid.EditorGridPanel(
+            {
+                store: store,
+                multiSelect: true,
+                title: '二级菜单管理',
+                stripeRows: true,
+                region: 'center',
+                autoHeight: true,
+                emptyText: '没有数据',
+                viewConfig: {forceFit: true},
+                reserveScrollOffset: true,
+                columns: [
+                    {
+                        header: '二级菜单',
+                        align: "center",
+                        sortable: true,
+                        dataIndex: 'Name'
+                    },
+                    {
+                        header: '一级菜单',
+                        align: "center",
+                        sortable: true,
+                        dataIndex: 'TypeName'
+                    },
+                    {
+                        header: '操作',
+                        align: "center",
+                        dataIndex: 'ID',
+                        renderer: function (value, cellmeta) {
+                            return "<a href='#' onclick=modify('" + value + "')>修改</a>&nbsp;&nbsp;<a href='#' onclick=del('" + value + "')>删除</a>"
+                        }
+                    }
+                ],
+                bbar: new Ext.PagingToolbar({
+                    pageSize: _pageSize,
+                    store: store,
+                    displayMsg: "显示{0}条到{1}条记录，总共{2}条记录",
+                    emptyMsg: "没有数据记录",
+                    displayInfo: true
+                })
+            });
+    listView.on("render", function (p, e) {
+
+        /* p.canCel.setHandler(function(b, e){
+         if (p.getSelectionModel().getSelections().length == 0) {
+         Ext.Msg.alert('提示','请选择二级菜单！');
+         return;
+         }
+         })*/
+    })
+
+    var infoPanel = new Ext.TabPanel({
+        labelWidth: 85,
+        activeTab: 0,
+        plain: true,
+        defaults: {autoScroll: true},
+        items: [
+            listView
+        ]
+    });
+
+    var teamCombox = new SettCombbox({
+        url: '../Info/TeamList/',
+        fieldLabel: '班组',
+        width: 151,
+        hiddenName: 'Group',
+        autoLoad: false
+    });
+
+    teamCombox.store.load({params: {Type: 1}})
+
+
+    var submitForm = new Ext.FormPanel({
+        labelWidth: 85,
+        defaults: {
+            border: false
+        },
+        url: '../manager/BuildAjax',
+        title: '二级菜单创建',
+        style: 'margin-top:6px;margin-left:20px',
+        labelAlign: 'right',
+        layout: 'form',
+        items: [
+            {
+                fieldLabel: '二级菜单名',
+                xtype: 'textfield',
+                allowBlank: false,
+                name: 'UserName',
+                width: 151
+            },
+            teamCombox
+            ,
+            {
+                style: 'margin-left:90px',
+                width: 100,
+                xtype: 'button',
+                text: '创建帐户',
+                handler: function () {
+
+                    submitForm.getForm().submit({
+                        success: function (v, action) {
+                            var re = Ext.decode(action.response.responseText);
+                            if (re.success) {
+                                Ext.MessageBox.alert('提示', '创建成功');
+                                listView.store.reload();
+                            }
+                        },
+                        failure: function (v, action) {
+                            Ext.MessageBox.alert('提示', '创建失败');
+                        }
+                    })
+                }
+            }
+        ]
+    })
+
+    var modifyForm = new Ext.FormPanel({
+        labelWidth: 85,
+        defaults: {
+            border: false
+        },
+        url: '../Manager/Useredit',
+        style: 'margin-top:6px;margin-left:20px',
+        labelAlign: 'right',
+        layout: 'form',
+        items: [
+            {
+                xtype: 'hidden',
+                name: 'ID'
+            },
+            {
+                fieldLabel: '二级菜单名',
+                xtype: 'textfield',
+
+                name: 'Name',
+                width: 151
+            },
+            new SettCombbox({
+                url: '../Info/TeamList',
+                fieldLabel: '班',
+                width: 151,
+                hiddenName: 'Type',
+                autoLoad: true
+            })
+        ]
+    })
+
+    var win = new Ext.Window({
+        layout: 'fit',
+        width: 350,
+        height: 200,
+        closeAction: 'hide',
+        // plain: true,
+        title: '菜单修改',
+        items: [modifyForm],
+        buttons: [
+            {
+                text: '确认',
+                handler: function () {
+
+                    modifyForm.getForm().submit({
+                        success: function (v, action) {
+                            var re = Ext.decode(action.response.responseText);
+                            if (re.success) {
+                                Ext.MessageBox.alert('提示', '修改成功');
+                                listView.store.reload();
+                                win.hide();
+                            }
+                        },
+                        failure: function () {
+                            Ext.MessageBox.alert('提示', '修改失败');
+                        }
+                    })
+
+                }
+            },
+            {
+                text: '取消',
+                handler: function () {
+                    modifyForm.getForm().reset();
+                    win.hide();
+                }
+            }
+        ]
+    });
+    var submmitTab = new Ext.TabPanel({
+        labelWidth: 85,
+        activeTab: 0,
+        height: 200,
+        plain: true,
+        style: 'margin-top:15px',
+        defaults: {autoScroll: true},
+        items: [
+            submitForm
+        ]
+    });
+    var formpanels = new Ext.Panel({
+        region: 'center',
+        fileUpload: true,
+        autoScroll: true,
+        bodyStyle: "padding:20px;",
+        items: [
+            infoPanel,
+            submmitTab
+        ]
+    });
+
+
+    new Ext.Viewport(
+            {
+                layout: 'border',
+                items: [
+                    formpanels
+                ]
+            });
+})
+</script>

@@ -1,0 +1,341 @@
+<script>
+Ext.onReady(function () {
+    var msgTip = new Ext.LoadMask(Ext.getBody(), {
+        msg: 'Excel正在生成中',
+        removeMask: true
+    });
+    _pageSize = 50;
+    /*二个动态框*/
+    var teamCombox = new SettCombbox({
+        url: '/ams/Info/TeamList?ID=1&Type=1&All=0',
+        fieldLabel: '管理班组',
+        anchor: '95%',
+        id: 'team',
+        hiddenName: 'Team',
+        autoLoad: true
+    });
+    var peopleCombox = new SettCombbox({
+        url: '/ams/Info/UserList',
+        fieldLabel: '抄表员',
+        anchor: '95%',
+        hiddenName: 'Name',
+        id: 'people'
+    });
+
+
+//监听store加载
+    function comboxLoad(aCombox, bCombox, url) {
+        aCombox.store.on('load', function () {
+            bCombox.store.load({
+                url: url,
+                params: {
+                    ID: aCombox.store.getAt(0).data.ID
+                }
+            });
+        });
+    }
+
+//监听combox选择事件
+    function comSelect(aCombox, bCombox, url) {
+        aCombox.on("select", function (combo) {
+            bCombox.reset();
+            bCombox.store.load({
+                url: url,
+                params: {
+                    ID: combo.value
+                }
+            });
+        })
+    }
+
+    comboxLoad(teamCombox, peopleCombox, "/ams/Info/UserList");
+    comSelect(teamCombox, peopleCombox, "/ams/Info/SegmentList");
+    var infoSearch = new Ext.FormPanel({
+        title: '查询条件',
+        defaults: {
+            border: false
+        },
+        labelAlign: 'right',
+        style: 'padding-top:10px',
+        url: '/ams/CountSearch/charges',
+        layout: 'column',
+        items: [
+            {
+                columnWidth: .35,
+                layout: 'form',
+                defaults: {
+                    xtype: 'textfield'
+                },
+                items: [
+                    teamCombox
+                    , {
+                        xtype: 'compositefield',
+                        fieldLabel: '收费时间',
+                        defaults: {
+                            xtype: 'datefield'
+                        },
+                        items: [
+                            {
+                                xtype: 'datetimefield',
+                                format: 'Y-m-d H:i',
+                                name: 'FromData',
+                                value: new Date(new Date().clearTime() - 1 * 24 * 60 * 60 * 1000),
+                                width: 140
+                            },
+                            {
+                                xtype: 'displayfield',
+                                value: '至: '
+                            },
+                            {
+                                xtype: 'datetimefield',
+                                format: 'Y-m-d H:i',
+                                name: 'ToData',
+                                value: new Date().format('Y-m-d H:i:s'),
+                                width: 140
+                            }
+                        ]
+                    }]
+            },
+            {
+                columnWidth: .25,
+                layout: 'form',
+                defaults: {
+                    xtype: 'textfield'
+                },
+                items: [
+                    peopleCombox
+                    , {
+                        xtype: 'compositefield',
+                        items: [
+                            {
+                                xtype: 'hidden'
+                                //   style: 'text-align:right;width:40px;',
+                            },
+                            {
+                                width: 100,
+                                xtype: 'button',
+                                text: '查询',
+                                handler: function () {
+                                    var data = infoSearch.getForm().getValues();
+                                    Ext.apply(listView.store.baseParams, data);
+                                    listView.store.load({
+                                        params: data,
+                                        callback: function (v, action) {
+                                            if (v.length == 0) {
+                                                listView.store.removeAll();
+                                                Ext.getCmp('bbar').updateInfo();
+                                                Ext.MessageBox.alert("提示", "没有数据！");
+                                            }
+                                        },
+                                        add: false
+                                    });
+                                }
+                            }
+                        ]
+                    }]
+            }
+        ]
+    });
+    var searchPanel = new Ext.TabPanel({
+        labelWidth: 85,
+        activeTab: 0,
+        height: 100,
+        plain: true,
+        defaults: {autoScroll: true},
+        items: [
+            infoSearch
+        ]
+    });
+
+    var store = new Ext.data.JsonStore(
+            {
+                url: '/ams/CountSearch/charges',
+                root: 'data',
+                totalProperty: 'total',
+                baseParams: {
+                    start: 0,
+                    limit: _pageSize
+                },
+                fields: summaryFields
+            });
+
+    var listView = new Ext.grid.EditorGridPanel(
+            {
+                store: store,
+                multiSelect: true,
+                title: '汇总信息',
+                stripeRows: true,
+                autoHeight: true,
+                region: 'center',
+                emptyText: '没有数据',
+                viewConfig: {forceFit: true},
+                reserveScrollOffset: true,
+                columns: [
+                    {
+                        id: 'name',
+                        header: '抄表段编号',
+                        align: "center",
+                        sortable: true,
+                        dataIndex: 'Segment'
+                    },
+                    {
+                        header: '用户编号',
+                        dataIndex: 'CustomerNumber',
+                        align: "center",
+                        sortable: true,
+                        renderer: function (v) {
+                            return "<a href='#'>" + v + "</a>";
+                        }
+                    },
+                    {
+                        header: '用户名称',
+                        sortable: true,
+                        align: "center",
+                        width: 130,
+                        dataIndex: 'Name'
+                    },
+                    {
+                        header: '用电地址',
+                        sortable: true,
+                        align: "center",
+                        width: 200,
+                        dataIndex: 'Address'
+                    },
+                    {
+                        header: '电费年月',
+                        sortable: true,
+                        align: "center",
+                        dataIndex: 'YearMonth'
+                    },
+                    {
+                        header: '电费金额',
+                        sortable: true,
+                        align: "center",
+                        dataIndex: 'Money'
+                    },
+                    {
+                        header: '收费时间',
+                        sortable: true,
+                        align: "center",
+                        dataIndex: 'Time'
+                    },
+                    {
+                        header: '收费人',
+                        sortable: true,
+                        align: "center",
+                        dataIndex: 'UserName'
+                    },
+                    {
+                        header: '交费电话',
+                        sortable: true,
+                        align: "center",
+                        dataIndex: 'LandlordPhone'
+                    },
+                    {
+                        header: '租房户信息',
+                        sortable: true,
+                        align: "center",
+                        dataIndex: 'IsRent',
+                        renderer: function (v) {
+                            if (v == 1) {
+                                return '是';
+                            } else {
+                                return '否';
+                            }
+                        }
+                    }
+                ],
+                bbar: new Ext.PagingToolbar({
+                    pageSize: _pageSize,
+                    store: store,
+                    displayMsg: "显示{0}条到{1}条记录，总共{2}条记录",
+                    emptyMsg: "没有数据记录",
+                    id: 'bbar',
+                    displayInfo: true,
+                    items: [
+                        '-', {
+                            text: 'excel',
+                            iconCls: 'excel',
+                            handler: function (btn, pressed) {
+                                if (listView.getStore().data.length == 0) {
+                                    Ext.MessageBox.alert('提示', '请先查询数据');
+                                    return;
+                                }
+                                msgTip.show();
+                                infoSearch.getForm().submit({
+                                    url: '/ams/export/CountCharges',
+                                    success: function (v, action) {
+                                        var re = Ext.decode(action.response.responseText);
+                                        msgTip.hide();
+                                        Ext.MessageBox.alert('提示', "<a target='_blank' href='" + re.msg + "'>下载</a>");
+                                    },
+                                    failure: function (v, action) {
+                                        msgTip.hide();
+                                        Ext.MessageBox.alert('提示', '创建失败');
+                                    }
+                                })
+                            }
+                        }, {
+                            id: 'htmlID',
+                            fieldLabel: ''
+                        }]
+                })
+            });
+    listView.getStore().on("load", function (p) {
+        var tpl = "";
+        var data = infoSearch.getForm().getValues();
+        data.start = 0;
+        data.limit = 5;
+        Ext.Ajax.request({
+            params: data,
+            url: '/ams/CountSearch/charges',
+            success: function (v, action) {
+                var re = Ext.decode(v.responseText);
+                var total = re.TotalData.Count;
+                var Money = re.TotalData.Money;
+                tpl = '共计：' + total + '条，金额' + Money + '元';
+                Ext.getCmp('htmlID').setText(tpl);
+            },
+            failure: function () {
+                Ext.getCmp('htmlID').setText(tpl);
+            }
+        })
+    })
+    listView.on('cellclick', function (grid, rowIndex, columnIndex, e) {
+        var record = grid.getStore().getAt(rowIndex);
+        var columnName = grid.getColumnModel().getDataIndex(columnIndex);
+        if (columnName == 'CustomerNumber') {
+            lookInfo(record.data.CustomerNumber, 0)
+        }
+    })
+    var listTab = new Ext.TabPanel({
+        labelWidth: 85,
+        activeTab: 0,
+        plain: true,
+        style: 'margin-top:15px',
+        defaults: {autoScroll: true},
+        items: [
+            listView
+        ]
+    });
+
+
+    var allPanel = new Ext.Panel({
+        region: 'center',
+        fileUpload: true,
+        autoScroll: true,
+        bodyStyle: "padding:20px;",
+        items: [
+            searchPanel,
+            listTab
+        ]
+    });
+    new Ext.Viewport(
+            {
+                layout: 'border',
+                items: [
+                    allPanel
+                ]
+            });
+})
+</script>

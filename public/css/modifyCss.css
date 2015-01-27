@@ -1,0 +1,41 @@
+.x-tab-panel-header-plain .x-tab-strip-spacer{
+    background:white
+}
+.x-tab-strip span.x-tab-strip-text{
+    FONT:tahoma
+}
+
+.x-panel-body{
+    border:0
+}
+.upload-icon{
+    background-image: url(../images/icons/excel.png ) !important;
+}
+.excel {
+    background-image: url(../images/icons/excel.png ) !important;
+}
+.pdf {
+    background-image: url(../images/icons/pdf.png ) !important;
+}
+.txt {
+    background-image: url(../images/icons/txt.png ) !important;
+}
+
+.del {
+    background-image: url(../images/icons/del.png ) !important;
+}
+ .add {
+     background-image: url(../images/icons/addItem.png ) !important;
+ }
+.x-selectable, .x-selectable * {   
+    -moz-user-select: text! important ;   
+    -khtml-user-select: text! important ;   
+}
+.x-date-picker > table >tbody > tr > td > .x-form-timepickerfield > div >.x-form-field-wrap .x-form-trigger {
+    background-image: url('../js/ext/date/spinner.gif');
+    border-bottom-color: #b5b8c8;
+}
+
+.x-grid3-row td, .x-grid3-summary-row td {
+    font: normal 14px/16px arial, tahoma, helvetica, sans-serif;
+}

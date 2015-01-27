@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0025)http://10.158.249.35/web/ -->
+<HTML><HEAD><TITLE></TITLE>
+    <!-- HTTP 1.1 -->
+    <META http-equiv=Cache-Control content=no-store><!-- HTTP 1.0 -->
+    <META http-equiv=Pragma content=no-cache><!-- Prevents caching at the Proxy Server -->
+    <META http-equiv=Expires content=0>
+    <META http-equiv=Content-Type content="text/html; charset=utf-8">
+    <!-- import css-->
+    <LINK id="baseCssId" href="/call/public/css/default.css" type="text/css" rel=stylesheet />
+    <script src="/call/js/jquery.1.10.2.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            var Url = "/call/index/loginCheck"
+
+            $("#button").click(function(){
+                var data = $("form").serialize();
+                PostAjax(Url,data,LocationUrl)
+
+            })
+
+            $("body").keydown(function() {
+                if (event.keyCode == "13") {
+                    var data = $("form").serialize();
+                    PostAjax(Url,data,LocationUrl)
+                }
+            })
+
+            $("[name=UserName]").focus();
+            function PostAjax(Url,data,func)
+            {
+                $.ajax({
+                    url:Url,
+                    data:data,
+                    dataType:"json",
+                    type:'post',
+                    success:function(response){
+                        if (response.success) {
+                            func(response.data);
+                        } else {
+                            alert(response.msg);
+                        }
+                    },
+                    error:function(XMLHttpRequest, textStatus, errorThrown){
+                        console.log(errorThrown);
+                    }
+                })
+            }
+
+            function LocationUrl(value)
+            {
+                window.location.href = '/call/'+value;
+            }
+        })
+    </script>
+    <STYLE type=text/css>
+    BODY {
+        BACKGROUND-COLOR: #bde6db
+    }
+    TD {
+        FONT-SIZE: 12px; COLOR: #00644b
+    }
+    .ptlinput {
+        BORDER-RIGHT: #71a399 1px solid; BORDER-TOP: #71a399 1px solid; FONT-SIZE: 14px; BORDER-LEFT: #71a399 1px solid; WIDTH: 150px; BORDER-BOTTOM: #71a399 1px solid; HEIGHT: 24px; BACKGROUND-COLOR: #ffffff
+    }
+    .display_font {
+        FONT-WEIGHT: 900; FONT-SIZE: 18px
+    }
+    </STYLE>
+
+    <META content="MSHTML 6.00.6000.21359" name=GENERATOR></HEAD>
+<BODY>
+<FORM >
+    <TABLE height="100%" cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+            <TD align=middle>
+                <TABLE height=226 cellSpacing=0 cellPadding=0 width=1000 border=0>
+                    <TBODY>
+                    <TR>
+                        <TD vAlign=bottom align=middle background=/call/public/css/images/default_1.jpg
+                            height=329>
+                        </TD></TR>
+                    <TR>
+                        <TD vAlign=top align=right background=/call/public/css/images/defalut2.gif
+                            height=220>
+                            <TABLE cellSpacing=0 cellPadding=0 border=0>
+                                <TBODY>
+                                <TR>
+                                    <TD height=50>&nbsp; </TD>
+                                    <TD width=8>&nbsp; </TD>
+                                    <TD>&nbsp; </TD>
+                                    <TD width=48>&nbsp; </TD></TR>
+
+
+                                <TR>
+                                    <TD class=loginw align=right>
+                                        <DIV class=display_font>工号:&nbsp; </DIV></TD>
+                                    <TD><INPUT class=ptlinput tabIndex=1 size=16 name=UserName>
+                                    </TD>
+                                    <TD class=loginw style="TEXT-INDENT: 20px" align=right>
+                                        <DIV class=display_font>密码:&nbsp;
+                                            <DIV></DIV></DIV></TD>
+                                    <TD><INPUT class=ptlinput
+                                               tabIndex=2 type=password size=16 name=Password> </TD>
+                                    <TD>&nbsp;&nbsp;&nbsp;&nbsp; </TD></TR><!--include auth page 0_ /pf/authentication/auth_indigo.jsp end--></TBODY></TABLE>
+                            <P>
+                            <TABLE>
+                                <TBODY>
+                                <TR>
+                                    <TD rowSpan=5>&nbsp; </TD>
+                                    <TD id="button" align=right><IMG
+                                            style="CURSOR: pointer; MARGIN-RIGHT: 1px"
+                                             src="/call/public/css/images/dl.gif"> </TD>
+                                    <TD>&nbsp; </TD>
+                                    <TD rowSpan=5>&nbsp; </TD></TR>
+                                <TR>
+                                    <TD></TD>
+                                    <TD></TD>
+                                    <TD></SELECT></TD></TR></TBODY></TABLE></P></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></FORM>
+
+<STYLE type=text/css>#overlay {
+    Z-INDEX: 99; FILTER: alpha(opacity=70); LEFT: 0px; WIDTH: 100%; POSITION: absolute; TOP: 0px; HEIGHT: 500px; BACKGROUND-COLOR: #e8e8e8; opacity: 0.6; -moz-opacity: 0.6
+}
+</STYLE>
+</BODY>
+</HTML>

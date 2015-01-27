@@ -1,0 +1,212 @@
+<script>
+Ext.onReady(function(){
+    var msgTip = new Ext.LoadMask(Ext.getBody(),{
+        msg:'Excel正在生成中',
+        removeMask : true
+    });
+    var teamCombox = new SettCombbox({
+        url:'/ams/Info/TeamList?ID=1&Type=2&All=1',
+        fieldLabel: '营业班组',
+        anchor:'95%',
+        id:'team',
+        hiddenName:'Team',
+        autoLoad:true
+    });
+
+    var infoSearch = new Ext.FormPanel({
+        title: '查询条件',
+        defaults:{
+            border: false
+        },
+        labelAlign: 'right',
+        style: 'padding-top:10px',
+        layout:'column',
+        items: [{
+            columnWidth:.25,
+            layout: 'form',
+            defaults:{
+                xtype: 'textfield'
+            },
+            items: [
+                teamCombox]
+        },{
+            columnWidth:.35,
+            layout: 'form',
+            defaults:{
+                xtype: 'textfield'
+            },
+            items: [
+                {
+                    xtype: 'compositefield',
+                    fieldLabel: '收费时间',
+                    defaults:{
+                        xtype: 'datefield'
+                    },
+                    items:[
+                        {
+                            xtype:'datetimefield',
+                            value:currentDate,
+                            name:'FromData',
+                            width: 140
+                        },{
+                            xtype: 'displayfield',
+                            value: '至: '
+                        },{
+                            xtype:'datetimefield',
+                            format: 'Y-m-d H:i',
+                            name:'ToData',
+                            value:new Date().format('Y-m-d H:i:s'),
+                            width: 140
+                        }]
+                }
+            ]
+        },{
+            columnWidth:.25,
+            layout: 'form',
+            items:[{
+                width:100,
+                xtype:'button',
+                text:'查询',
+                handler:function(){
+                    var data = infoSearch.getForm().getValues();
+                    listView.store.load({
+                        params : data,
+                        callback:function(v){
+                            if (v.length == 0) {
+                                listView.store.removeAll();
+                                Ext.MessageBox.alert("提示","没有数据！");
+                            }
+                        },
+                        add: false
+                    });
+                }
+            }]
+        }]
+    });
+
+    var searchTab = new Ext.TabPanel({
+        labelWidth: 85,
+        activeTab: 0,
+        height:70,
+        plain:true,
+        defaults:{autoScroll: true},
+        items:[
+            infoSearch
+        ]
+    });
+
+    var store = new Ext.data.JsonStore(
+            {
+                url: '/ams/CountSearch/Reconciliation',
+                root: 'data',
+                fields: summaryFields
+            });
+
+    var listView = new Ext.grid.GridPanel({
+        store: store,
+        multiSelect: true,
+        title: '汇总信息',
+        stripeRows: true,
+        //region: 'center'
+        autoHeight:true,
+        emptyText: '没有数据',
+        reserveScrollOffset: true,
+        viewConfig: {forceFit:true},
+        columns: [{
+            header: '收费班组',
+            sortable: true,
+            align:"center",
+            dataIndex: 'ChargeTeam'
+        }, {
+            header: '管理班组',
+            dataIndex: 'Team',
+            align:"center",
+            sortable: true
+        }, {
+            header: '电费年份',
+            sortable: true,
+            align:"center",
+            dataIndex: 'Year'
+        }, {
+            header: '收费笔数',
+            sortable: true,
+            align:"center",
+            dataIndex: 'ChargeCount'
+        }, {
+            header: '收费金额',
+            sortable: true,
+            align:"center",
+            dataIndex: 'Money'
+        }],
+        bbar: [{
+         text: 'excel',
+         ref:'../canCel',
+         iconCls: 'excel',
+        handler: function(btn, pressed){
+            if (listView.getStore().data.length == 0) {
+                Ext.MessageBox.alert('提示','请先查询数据');
+                return;
+            }
+            msgTip.show();
+            infoSearch.getForm().submit({
+                url:'/ams/export/reconciliation',
+                success:function(v,action){
+                    var re = Ext.decode(action.response.responseText);
+                    msgTip.hide();
+                    Ext.MessageBox.alert('提示',"<a target='_blank' href='"+re.msg+"'>下载</a>");
+                },
+                failure:function(v,action) {
+                    msgTip.hide();
+                    Ext.MessageBox.alert('提示','创建失败');
+                }
+            })
+        }
+     },{
+            xtype:"label",
+            id:'labellID',
+            fieldLabel: '123'
+    }]
+});
+    listView.getStore().on("load",function(p){
+        var total = p.totalLength;
+        var money = 0;
+        Ext.each(p.data.items, function(it){
+            money += parseInt(it.data.Money);
+        })
+        var tpl  = '共计：'+total+'条，金额'+money+'元';
+        Ext.getCmp('labellID').setText(tpl);
+    })
+    var infoPanel = new Ext.TabPanel({
+        labelWidth: 85,
+        activeTab: 0,
+        plain:true,
+        style: 'margin-top:15px',
+        defaults:{autoScroll: true},
+        items:[
+            listView
+        ]
+    });
+
+
+    var formpanels = new Ext.Panel({
+        region: 'center',
+        fileUpload: true,
+        autoScroll: true,
+        bodyStyle: "padding:20px;",
+        items: [
+            searchTab,
+            infoPanel
+
+        ]
+    });
+
+
+    new Ext.Viewport(
+            {
+                layout: 'border',
+                items: [
+                    formpanels
+                ]
+            });
+})
+</script>

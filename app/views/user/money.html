@@ -1,0 +1,334 @@
+<script type="text/javascript">
+    Ext.onReady(function(){
+        _pageSize = 50;
+        //监听store加载
+        function comboxLoad(aCombox, bCombox, url)
+        {
+
+            aCombox.store.on('load',function(){
+                bCombox.store.load({
+                    url: url,
+                    params: {
+                        ID: aCombox.store.getAt(0).data.ID
+                    }
+                });
+            });
+        }
+        //监听combox选择事件
+        function comSelect(aCombox, bCombox, url)
+        {
+            aCombox.on("select",function(combo){
+                bCombox.reset();
+                bCombox.store.load({
+                    url: url,
+                    params: {
+                        ID: combo.value
+                    }
+                });
+            })
+        }
+
+        var teamCombox = new SettCombbox({
+            url:'/ams/Info/TeamList?ID=1&Type=1&All=1',
+            fieldLabel: '管理班组',
+            anchor:'95%',
+            id:'team',
+            hiddenName:'Team',
+            autoLoad:true
+        });
+
+        var peopleCombox = new SettCombbox({
+            url:'/ams/Info/UserList',
+            fieldLabel: '抄表员',
+            anchor:'95%',
+            hiddenName:'Name',
+            id:'people'
+        });
+
+        var teamAddCombox = new SettCombbox({
+            url:'/ams/Info/TeamList?ID=1&Type=1&All=1',
+            fieldLabel: '管理班组',
+            anchor:'95%',
+            id:'teamAdd',
+            hiddenName:'Team',
+            autoLoad:true
+        });
+
+        var peopleAddCombox = new SettCombbox({
+            url:'/ams/Info/UserList',
+            fieldLabel: '抄表员',
+            anchor:'95%',
+            hiddenName:'Name',
+            id:'peopleAdd'
+        });
+        comboxLoad(teamCombox, peopleCombox, "/ams/Info/UserList");
+        comSelect(teamCombox, peopleCombox,"/ams/Info/UserList");
+        comboxLoad(teamAddCombox, peopleAddCombox, "/ams/Info/UserList");
+        comSelect(teamAddCombox, peopleAddCombox,"/ams/Info/UserList");
+        var infoSearch = new Ext.FormPanel({
+            title: '查询条件',
+            defaults:{
+                border: false
+            },
+            labelAlign: 'right',
+            style: 'padding-top:10px',
+            url:'/ams/Charges/SearchFee',
+            layout:'column',
+            items: [{
+                columnWidth:.25,
+                layout: 'form',
+                defaults:{
+                    xtype: 'textfield'
+                },
+                items: [
+                    teamCombox,
+                    peopleCombox
+                ]
+            },{
+                columnWidth:.3,
+                layout: 'form',
+                defaults:{
+                    xtype: 'textfield'
+                },
+                items: [
+                    {
+                        xtype: 'compositefield',
+                        fieldLabel: '电费年月',
+                        defaults:{
+                            xtype: 'datefield'
+                        },
+                        items:[
+                        new Ext.form.DateField({
+                            plugins:'monthPickerPlugin',
+                            name:'FromData',
+                            id: 'from',
+                            width:100,
+                            value:new Date(),
+                            format: 'Ym'
+                        }),{
+                                xtype: 'displayfield',
+                                value: '至: '
+                        },new Ext.form.DateField({
+                                plugins:'monthPickerPlugin',
+                                name:'ToData',
+                                id: 'to',
+                                width:100,
+                                value:new Date(),
+                                format: 'Ym'
+                        })]
+                    },{
+                        xtype: 'compositefield',
+                        items:[{xtype:'hidden'},{
+                            width:100,
+                            xtype:'button',
+                            text:'查询',
+                            handler:function(){
+                                var data = infoSearch.getForm().getValues();
+                                Ext.apply(listView.store.baseParams, data);
+                                listView.getStore().load({
+                                    params: data,
+                                    callback:function(v,action){
+                                        if (v.length == 0) {
+                                            listView.store.removeAll();
+                                            Ext.getCmp('bbar').updateInfo();
+                                            Ext.MessageBox.alert("提示","没有数据！");
+                                        }
+                                    }
+                                });
+                            }
+                        }]
+                    }
+                ]
+            }]
+        });
+        var searchPanel = new Ext.TabPanel({
+            labelWidth: 85,
+            activeTab: 0,
+            height:100,
+            plain:true,
+            defaults:{autoScroll: true},
+            items:[
+                infoSearch
+            ]
+        });
+
+
+        var date = new Date();
+        var store = new Ext.data.JsonStore(
+            {
+                url: '/ams/user/list',
+                root: 'data',
+                fields: ['ID', 'UserName', 'Money', 'Month', 'House'],
+                totalProperty: 'total',
+                baseParams: {
+                    start: 0,
+                    limit: _pageSize
+                }
+            });
+
+        var listView = new Ext.grid.EditorGridPanel(
+                {
+                    store: store,
+                    multiSelect: true,
+                    title: '应收金额管理',
+                    stripeRows: true,
+                    region: 'center',
+                    autoHeight:true,
+                    emptyText: '没有数据',
+                    viewConfig: {forceFit:true},
+                    reserveScrollOffset: true,
+                    columns: [
+                        {
+                            header: '人员',
+                            align:"center",
+                            sortable: true,
+                            dataIndex: 'UserName'
+                        }, {
+                            header: '电费年月',
+                            align:"center",
+                            sortable: true,
+                            dataIndex: 'Month'
+                        },{
+                            header: '应收金额',
+                            dataIndex: 'Money',
+                            align:"center",
+                            sortable: true
+                        },{
+                            header: '应收户数',
+                            dataIndex: 'House',
+                            align:"center",
+                            sortable: true
+                        }],
+                    bbar: new Ext.PagingToolbar({
+                        pageSize: _pageSize,
+                        store: store,
+                        displayMsg: "显示{0}条到{1}条记录，总共{2}条记录",
+                        emptyMsg: "没有数据记录",
+                        id: 'bbar',
+                        displayInfo: true,
+                        items:[
+                            '-', {
+                                id: 'htmlID',
+                                fieldLabel:''
+                            }]
+                    })
+                });
+        listView.getStore().on("load",function(p){
+            var start = Ext.getCmp('from').getValue();
+            var end = Ext.getCmp('to').getValue();
+            var tpl = "此数据为当月应收金额，只对当月有效。目前为"+Ext.util.Format.date(start,"Ym")+"至"+Ext.util.Format.date(end,"Ym")+"的数据";
+            Ext.getCmp('htmlID').setText(tpl);
+        })
+        var datePanel = new Ext.TabPanel({
+            labelWidth: 85,
+            activeTab: 0,
+            plain:true,
+            style: 'margin-top:15px',
+            defaults:{autoScroll: true},
+            items:[
+                listView
+            ]
+        });
+
+        var addForm = new Ext.FormPanel({
+            labelWidth: 85,
+            style: "padding-top:10px",
+            url:'/ams/user/moneyupdate',
+            labelAlign: 'right',
+            title: '添加应收数据',
+            id: 'add',
+            layout: 'column',
+            items: [{
+                columnWidth:.2,
+                layout: 'form',
+                defaults:{
+                    xtype: 'textfield'
+                },
+                items: [
+                    teamAddCombox,
+                    peopleAddCombox,
+                    new Ext.form.DateField({
+                        plugins:'monthPickerPlugin',
+                        name:'Month',
+                        fieldLabel: '电费年月',
+                        value:new Date(),
+                        format: 'Ym'
+                    }),{
+                        fieldLabel: '应收金额',
+                        xtype: 'textfield',
+                        name:'Money',
+                        id: 'money',
+                        width:100,
+                        allowBlank:false
+                    },{
+                        fieldLabel: '应收户数',
+                        xtype: 'textfield',
+                        name:'House',
+                        id: 'house',
+                        width:100,
+                        allowBlank:false
+                    },{
+                        xtype: 'compositefield',
+                        items:[{xtype:'hidden'},{
+                            xtype: 'button',
+                            width:100,
+                            text:'录入',
+                            handler: function(){
+                                if (!addForm.getForm().isValid()) {
+                                    Ext.MessageBox.alert('提示','请正确填写表单');
+                                    return;
+                                }
+                                addForm.getForm().submit({
+                                    success:function(v, action){
+                                        var re = Ext.decode(action.response.responseText);
+                                        if (re.success) {
+                                            Ext.MessageBox.alert('提示','录入成功');
+                                            listView.store.reload();
+                                            addForm.getForm().reset();
+                                        }
+                                    },
+                                    failure:function(){
+                                        Ext.MessageBox.alert('提示','录入失败');
+                                    }
+                                })
+                            }
+                        }]
+                    }
+                ]
+            }]
+        })
+
+        var addPanel = new Ext.TabPanel({
+            labelWidth: 85,
+            activeTab: 0,
+            height:220,
+            style: "padding-top:15px",
+            plain:true,
+           // defaults:{autoScroll: true},
+            items:[
+                addForm
+            ]
+        });
+
+        var formpanels = new Ext.Panel({
+            region: 'center',
+            fileUpload: true,
+            autoScroll: true,
+            bodyStyle: "padding:20px;",
+            items: [
+                searchPanel,
+               datePanel,
+                addPanel
+            ]
+        });
+
+
+        new Ext.Viewport(
+        {
+            layout: 'border',
+            items: [
+                formpanels
+            ]
+        });
+    })
+</script>
